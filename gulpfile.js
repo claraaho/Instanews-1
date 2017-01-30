@@ -16,9 +16,9 @@ var plumberErrorHandler = {
     })
 };
 
+
 gulp.task('scripts', ['lint'], function () {
     gulp.src('./JS/*.js')
-        .pipe(plumber(plumberErrorHandler))
         .pipe(notify())
         .pipe(uglify())
         .pipe(rename({
@@ -28,8 +28,17 @@ gulp.task('scripts', ['lint'], function () {
 
 })
 
+gulp.task('lint', function () {
+    return gulp.src(['js/*.js'])
+        .pipe(plumber(plumberErrorHandler))
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+});
+
 gulp.task('sass', function () {
     gulp.src('./sass/style.scss')
+        .pipe(plumber(plumberErrorHandler))
         .pipe(sass())
         .pipe(autoprefixer({
             browsers: ['last 2 versions']
@@ -47,22 +56,14 @@ gulp.task('browser-Sync', function () {
         }
     })
 
-    gulp.watch(['build/css/*.css', 'build/js/*.js'])
-        .on('change', browserSync.reload)
+    gulp.watch(['build/css/*.css', 'build/js/*.js']).on('change', browserSync.reload)
 
 })
 
 gulp.task('watch', function () {
     gulp.watch('js/*.js', ['scripts']);
-    gulp.watch('sass/*.scss', ['sass']);
-});
+    gulp.watch('sass/*.scss', ['sass'])
+})
 
-gulp.task('lint', function () {
-    return gulp.src(['js/*.js'])
-        .pipe(plumber(plumberErrorHandler))
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
-});
 
-gulp.task('default', ['watch', 'browser-Sync'])
+gulp.task('default', ['watch', 'browser-Sync', 'scripts'])
