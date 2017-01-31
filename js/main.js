@@ -1,7 +1,14 @@
 $(function () {
-  $('.selection').change('.selection option:selected', function (event) {
+  $('.selection').change(function (event) {
     event.preventDefault();
     var chosenSelection = $('.selection option:selected').text().toLowerCase();
+
+
+    $('header').addClass('header-to-top')
+    $('.logo').addClass('resize-logo')
+
+  var $news = $('.articleFlex');
+  $news.empty();
 
     var url = 'https://api.nytimes.com/svc/topstories/v2/' + chosenSelection + '.json';
     url += '?' + $.param({
@@ -14,18 +21,37 @@ $(function () {
       .done(function (data) {
         console.log(data);
 
+
+
         var filteredArticle = data.results.filter(function (val) {
-          return val.multimedia.length > 0;
+          return val.multimedia.length !== 0;
         }).slice(0, 12);
-        $.each(filteredArticle, function(index, value){
-$('.articleFlex').appened('<li>ghhggfvg</li>')
-        });
+        var $viewImage = $('.articleFlex');
+         var listItem = '';
+        $.each(filteredArticle, function (index, value) {
 
+          var title = value.abstract;
+         var image = value.multimedia[4].url;
 
-      })
-      .fail(function (err) {
-        throw err;
-      });
+           listItem += '<li class="li-article"><div id="wrapper"><p class="text">'
+           listItem += title
+           listItem += '</p></div>'
+           listItem += '<a href="' + value.url + '"><img class="li-image" src="'
+           listItem += image
+           listItem += '"/></a></li>'
+         })
+       $viewImage.append(listItem);
+       })
+
+// var storiesGridItem= '';
+
+//           storiesGridItem += '<li class="story" style="background-image: url(\'' + val.multimedia[4].url + '\');">';
+//           storiesGridItem += '<a href="' + val.url + '">';
+//           storiesGridItem += '<p class="story-abstract">' + val.abstract + '</p> </a>' + '</li>';
+//           $storiesGrid.append(storiesGridItem);
+//         });
+
+//       })
 
   });
 
