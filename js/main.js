@@ -33,7 +33,7 @@ $(function () {
           var title = value.abstract;
           var image = value.multimedia[4].url;
 
-          listItem += '<li class="li-article"><div id="wrapper"><p class="text">'
+          listItem += '<li class="li-article"><div class="wrapper"><p class="text">'
           listItem += title
           listItem += '</p></div>'
           listItem += '<a href="' + value.url + '"><img class="li-image" src="'
