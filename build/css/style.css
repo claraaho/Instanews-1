@@ -171,8 +171,7 @@ body {
   background-color: black;
   color: white;
   max-width: 100%;
-  font-family: 'Open Sans', serif;
-  font-weight: lighter;
+  font-family: 'Open Sans Light', serif;
 }
 
 .wrapper {
